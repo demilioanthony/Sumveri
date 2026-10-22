@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sumveri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Sign in -->
+<div class="auth" id="auth" hidden>
+  <div class="auth-side">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#087F8C"/><circle cx="16" cy="16" r="7" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3.6"/><path d="M16 9a7 7 0 1 1-7 7" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg>
+      <span class="word">Sumveri</span>
+    </div>
+    <div class="pitch">
+      <h2>See where your money goes.</h2>
+      <p>Sumveri shows what comes in, what goes out, and what you keep, across every bank you connect.</p>
+      <ul>
+        <li>Read-only bank connection through Plaid</li>
+        <li>Your bank password never reaches Sumveri</li>
+        <li>Encrypted storage, and you can delete your data any time</li>
+      </ul>
+    </div>
+  </div>
+  <div class="auth-main">
+    <form class="auth-card" id="authForm" novalidate>
+      <h1 id="authTitle">Sign in</h1>
+      <p class="auth-sub" id="authSub">Welcome back. Enter your details to continue.</p>
+      <div class="field" id="nameField" hidden>
+        <label for="name">Name</label>
+        <input id="name" type="text" autocomplete="name" maxlength="60">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" type="password" autocomplete="current-password" required>
+        <small id="pwHint" hidden>At least 10 characters.</small>
+      </div>
+      <p class="form-err" id="authErr" role="alert" hidden></p>
+      <button class="btn block" id="authSubmit" type="submit">Sign in</button>
+      <p class="switch"><span id="switchText">New to Sumveri?</span> <button class="textbtn" id="switchBtn" type="button">Create an account</button></p>
+      <div class="or"><span>or</span></div>
+      <button class="btn ghost block" id="demoBtn" type="button">Explore the demo</button>
+      <p class="prov-note">Sample data only. No account or bank needed.</p>
+      <div class="providers" role="group" aria-label="Other sign-in options, not available yet">
+        <button class="btn ghost block" type="button" disabled>Continue with Google <span class="tag">Not available yet</span></button>
+        <button class="btn ghost block" type="button" disabled>Continue with Apple <span class="tag">Not available yet</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="app" id="appRoot" hidden>
+
+<aside class="side">
+  <div class="side-in">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#087F8C"/><circle cx="16" cy="16" r="7" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3.6"/><path d="M16 9a7 7 0 1 1-7 7" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"/></svg>
+      <span class="word">Sumveri</span>
+    </div>
+    <nav class="nav" aria-label="Main">
+      <a href="#overview" data-v="overview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h6V4H4zM14 20h6v-9h-6zM4 20h6v-3H4zM14 8h6V4h-6z"/></svg>Overview</a>
+      <a href="#transactions" data-v="transactions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>Transactions</a>
+      <a href="#accounts" data-v="accounts"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-6 9 6M5 10v8M9.5 10v8M14.5 10v8M19 10v8M3 20h18"/></svg>Accounts</a>
+    </nav>
+    <div class="side-foot">
+      <div class="trust"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg><span>Read-only bank connection through Plaid</span></div>
+      <span class="chip" id="env">Starting</span>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="wrap">
+    <div class="demo-bar" id="demoBar" hidden>
+      <span id="demoText"></span>
+      <span class="demo-actions">
+        <button class="textbtn" id="demoReset" type="button">Reset demo</button>
+        <button class="textbtn" id="demoExit" type="button"></button>
+      </span>
+    </div>
+
+    <div class="top">
+      <div>
+        <h1 id="title">Overview</h1>
+        <p class="range" id="range"></p>
+      </div>
+      <div class="top-r">
+        <div class="top-pe" id="periodbar">
+          <div class="step"><button id="prev" type="button" aria-label="Previous period">‹</button><button id="next" type="button" aria-label="Next period">›</button></div>
+          <div class="seg" role="group" aria-label="Time period">
+            <button type="button" data-p="week" aria-pressed="false">Week</button>
+            <button type="button" data-p="month" aria-pressed="true">Month</button>
+            <button type="button" data-p="year" aria-pressed="false">Year</button>
+          </div>
+        </div>
+        <div class="acct">
+          <button class="avatar" id="avatar" type="button" aria-label="Account menu" aria-haspopup="menu" aria-expanded="false">S</button>
+          <div class="menu" id="acctMenu" role="menu" hidden>
+            <div class="who"><b id="acctName"></b><span id="acctEmail"></span></div>
+            <button type="button" id="signout" role="menuitem">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice" id="notice" role="status"></div>
+
+    <!-- Overview -->
+    <section id="v-overview">
+      <div class="kpis">
+        <div class="card kpi dark" id="kNetCard">
+          <span class="k-label">Net cash flow</span>
+          <strong class="k-val" id="kNet"></strong>
+          <span class="k-d" id="kNetD"></span>
+          <span class="k-s" id="kNetS"></span>
+        </div>
+        <div class="card kpi">
+          <span class="k-label">Income</span>
+          <strong class="k-val in" id="kInc"></strong>
+          <span class="k-d" id="kIncD"></span>
+          <span class="k-s" id="kIncS"></span>
+        </div>
+        <div class="card kpi">
+          <span class="k-label">Expenses</span>
+          <strong class="k-val out" id="kExp"></strong>
+          <span class="k-d" id="kExpD"></span>
+          <span class="k-s" id="kExpS"></span>
+        </div>
+      </div>
+
+      <div class="card calc">
+        <div class="calc-rows">
+          <div><span class="calc-k">Transfers</span><span id="xferLine"></span></div>
+          <div><span class="calc-k">Pending</span><span id="pendLine"></span></div>
+          <div><span class="calc-k">Compared</span><span id="cmpLine"></span></div>
+        </div>
+        <details class="how">
+          <summary>How these numbers are calculated</summary>
+          <ul>
+            <li><b>Net cash flow</b> is income minus expenses for the period. It is cash in and out of your accounts, not accounting profit.</li>
+            <li><b>Income</b> is money that arrived and was not a transfer. Refunds count as income.</li>
+            <li><b>Expenses</b> is money that left and was not a transfer.</li>
+            <li><b>Transfers</b> between your own accounts, to savings, and (when the card itself is linked) credit card payments are listed separately and never added to income or expenses.</li>
+            <li>If a transfer is really income (a client paying by wire, say), or the reverse, change it with the <b>Counts as</b> menu on the Transactions page. Totals update straight away.</li>
+            <li><b>Comparisons</b> use the same number of days. For a month still in progress, the percentages compare October 1 to today against September 1 to the same day, not against all of September.</li>
+            <li><b>Pending</b> transactions are not counted until your bank posts them, because their amounts can still change.</li>
+            <li>Dates are the dates your bank reports. Weeks run Monday to Sunday.</li>
+          </ul>
+        </details>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <h2>Income and spending</h2>
+          <div class="donut-wrap">
+            <svg id="donut" viewBox="0 0 42 42" role="img" aria-label="Income split into spending and money kept">
+              <circle class="track" cx="21" cy="21" r="15.9155"></circle>
+              <g id="arcs"></g>
+            </svg>
+            <div class="donut-c"><b id="dPct">–</b><span id="dLbl"></span></div>
+          </div>
+          <ul class="key" id="key"></ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><h2>Recent transactions</h2><a class="link" href="#transactions" data-v="transactions">View all</a></div>
+          <ul class="recent" id="recent"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transactions -->
+    <section id="v-transactions" hidden>
+      <div class="card flush">
+        <div class="bar">
+          <input class="search" id="q" type="search" placeholder="Search transactions" aria-label="Search transactions" autocomplete="off">
+          <div class="seg" role="group" aria-label="Filter">
+            <button type="button" data-f="all" aria-pressed="true">All</button>
+            <button type="button" data-f="in" aria-pressed="false">Income</button>
+            <button type="button" data-f="out" aria-pressed="false">Expenses</button>
+            <button type="button" data-f="transfer" aria-pressed="false">Transfers</button>
+          </div>
+          <button class="btn ghost" id="csvBtn" type="button">Import CSV</button>
+          <button class="btn ghost" id="sampleCsv" type="button" hidden>Download sample CSV</button>
+          <input id="csv" type="file" accept=".csv,text/csv,text/plain" hidden>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th scope="col">Date</th><th scope="col">Description</th><th scope="col" class="c-cat">Category</th><th scope="col">Counts as</th><th scope="col" class="r">Amount</th></tr></thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+        <div class="tbl-foot"><span id="count"></span><button class="btn ghost" id="more" type="button" hidden>Show more</button></div>
+      </div>
+      <p class="small-note">Transfers and pending transactions are listed here but not included in income or expenses. Use <b>Counts as</b> to correct a row that was classified wrongly.</p>
+    </section>
+
+    <!-- Accounts -->
+    <section id="v-accounts" hidden>
+      <div class="grid2 acc">
+        <div class="card">
+          <div class="card-h"><h2>Connected banks</h2>
+            <div class="btns">
+              <button class="btn ghost js-disconnect" type="button" hidden>Disconnect all</button>
+              <button class="btn js-connect" type="button" hidden>Connect bank</button>
+            </div>
+          </div>
+          <ul class="banks" id="banks"></ul>
+          <p class="hint" id="bankHint"></p>
+        </div>
+        <div class="card">
+          <h2>How your information is protected</h2>
+          <ul class="checks">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Your bank password stays with your bank.</b><span>You sign in through Plaid’s secure window. Sumveri never sees your username or password.</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Read-only access.</b><span>Sumveri can view your transactions. It cannot move money or make payments.</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>Encrypted storage.</b><span>Access keys and saved transactions are encrypted with AES-256 before they are written to disk.</span></div></li>
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><div><b>You stay in control.</b><span>Disconnect at any time to revoke access at Plaid and delete saved transactions.</span></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <p class="foot"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Sumveri reads transactions only. It cannot move money.</p>
+  </div>
+</main>
+</div>
+
+<!-- CSV import preview -->
+<dialog class="dlg" id="importDlg" aria-labelledby="impTitle">
+  <div class="dlg-h"><h2 id="impTitle">Review import</h2><p id="impFile"></p></div>
+  <div class="dlg-b" id="impBody"></div>
+  <div class="dlg-f">
+    <button class="btn ghost" id="impCancel" type="button">Cancel</button>
+    <button class="btn" id="impGo" type="button">Import</button>
+  </div>
+</dialog>
+
+<script src="finance.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
