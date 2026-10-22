@@ -126,7 +126,7 @@ AI generated the application code and automated tests. My contribution centered 
 - [x] Decimal-format, transfer-classification, duplicate-email and period-comparison issues fixed, each with regression tests
 - [x] Desktop and phone-width browser check, including keyboard-only use (Tab order, Enter on links and buttons, Escape closing the import dialog, arrow keys in the Counts as menu)
 - [x] Current screenshots in `docs/`
-- [ ] Tests passing on GitHub Actions (the workflow is included; this ticks after the first push)
+- [X] Tests passing on GitHub Actions (the workflow is included; this ticks after the first push)
 - [ ] Public demo deployed and linked at the top of this file
 
 ## Hosting
