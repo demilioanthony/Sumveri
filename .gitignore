@@ -1,0 +1,21 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Saved account and bank data
+/data/
+
+# Installed dependencies and generated output
+node_modules/
+coverage/
+*.log
+npm-debug.log*
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
